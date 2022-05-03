@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import HelloWorld from "@/components/HelloWorld.vue";
-import { reactive, ref } from "vue";
+import { onMounted, reactive, ref } from "vue";
 import { RouterLink, RouterView } from "vue-router";
+import CustomButton from "./components/CustomButton.vue";
+import MultipleRootNode from "./components/MultipleRootNode.vue";
 
 const name = ref("Hoàng Minh");
 const rawHTML = ref("<h1>Hoàng Minh</h1>");
 const state = reactive({ count: 1 });
 
 const model = ref("test v-model");
-
-const testDisabled = ref(true);
 
 function handleChange(e: Event) {
   const target = e.target as HTMLInputElement;
@@ -18,6 +18,57 @@ function handleChange(e: Event) {
 
   rawHTML.value = `<h1>${target.value}</h1>`;
 }
+
+const showElement = ref(true);
+
+const showElement2 = ref(false);
+
+const showMultipleRootNode = ref(true);
+
+const testVFor: Array<number> = [1, 2, 3];
+
+const testClickedBtn = () => {
+  showElement.value = !showElement.value;
+  showElement2.value = !showElement2.value;
+  showMultipleRootNode.value = !showMultipleRootNode.value;
+};
+
+const myObject = reactive({
+  title: "How to do lists in Vue",
+  author: "Jane Doe",
+  publishedAt: "2016-04-10",
+});
+
+const countInline = ref(0);
+
+const handleSubmitForm = () => {
+  console.log("Hoàng Min");
+};
+
+const handleKeyEventHandler = () => {
+  countInline.value++;
+};
+
+const data = ref([
+  { id: 1, title: "Hoàng" },
+  { id: 2, title: "Minh" },
+
+  { id: 3, title: "A" },
+]);
+
+const vModelValueEx = ref<number>(1);
+
+const multiLine = ref<string>("");
+
+const multiCheckbox = ref<Array<string>>([]);
+
+const inputValue = ref<any>("no");
+
+const pick = ref<1 | 2>(1);
+
+onMounted(() => {
+  console.log("Mounted");
+});
 </script>
 
 <template>
@@ -29,8 +80,84 @@ function handleChange(e: Event) {
 
   <h1>Model:</h1>
   <div>{{ model }}</div>
-  <input v-model="model" />
+  <input v-model.lazy="model" />
 
+  <!-- Test conditional and loop directive -->
+  <div v-if="showElement">This Element Is Showed</div>
+  <div v-else>This Element Is UnShowed</div>
+
+  <div v-if="showElement2">This Is Second Showed Element</div>
+  <div v-else>This Second Element Is Not Showed</div>
+
+  <div v-show="showElement">Test V-Show Element</div>
+
+  <ul>
+    <li :key="number" v-for="number in testVFor">Test - {{ number }}</li>
+  </ul>
+
+  <ul>
+    <li :key="key" v-for="(value, key) in myObject">
+      Test Object Value {{ value }}
+    </li>
+  </ul>
+
+  <div>Count Clicked Inline: {{ countInline }}</div>
+
+  <button v-on:click="countInline++">Test On CLick Inline</button>
+
+  <!-- Test modifier event -->
+  <form @submit.prevent="handleSubmitForm">
+    <button>Submit Form</button>
+    <button type="button" @click.ctrl="handleKeyEventHandler">
+      Ctrl Clicked
+    </button>
+  </form>
+
+  <CustomButton @click="testClickedBtn" class="test-fall-through" />
+
+  <MultipleRootNode v-if="showMultipleRootNode" class="abc" />
+
+  <!-- Test V model select -->
+  <select v-model="vModelValueEx">
+    <option v-for="item in data" :key="item.id" :value="item.id">
+      {{ item.title }}
+    </option>
+  </select>
+
+  <div>V-Model Value {{ vModelValueEx }}</div>
+
+  <!-- Test multitext -->
+  <span>Multiline message</span>
+  <p style="white-space: pre-line">{{ multiLine }}</p>
+  <textarea v-model.lazy="multiLine" cols="3" rows="10"></textarea>
+
+  <br />
+  <!-- Test multiCheckbox -->
+  <div>Choosen Checkbox Is: {{ multiCheckbox }}</div>
+  <input type="checkbox" id="jack" value="jack" v-model="multiCheckbox" />
+  <label for="jack">Jack</label>
+
+  <input type="checkbox" id="john" value="john" v-model="multiCheckbox" />
+  <label for="john">John</label>
+
+  <input type="checkbox" id="jenny" value="jenny" v-model="multiCheckbox" />
+  <label for="jenny">Jenny</label>
+
+  <br />
+  <!-- Test true false value -->
+  <div>Current Input Value: {{ inputValue }}</div>
+  <input
+    type="checkbox"
+    v-model="inputValue"
+    true-value="yes"
+    false-value="no"
+  />
+
+  <br />
+  <!-- Radio Input -->
+  <div>Radio Input Value: {{ pick }}</div>
+  <input type="radio" v-model="pick" :value="1" />
+  <input type="radio" v-model="pick" :value="2" />
   <header>
     <img
       alt="Vue logo"

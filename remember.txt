@@ -1,0 +1,31 @@
+- ref được unwrap trong ref
+- Muốn bind giá trị số vào attr thì dùng v-bind thay vì nhập string như bth
+
+Directive
+- If else bắt đầu bằng v-if
+
+- If else directive áp dụng cho cả template, không truyền vào element được nhận attrs
+
+- v-show không render lần đầu cho tới khi nhận giá trị true, sử dụng khi toggle nhiều lần
+
+- v-for với object cung cấp value và key của object
+
+- v-if không access vào giá trị của v-for - move v-if vào template để access vào v-for
+
+- Muốn truyền data từ v-for vào element con trong component, sử dụng props
+
+- Vơi function tạo ra mảng mới thì gán mảng cũ bằng mảng mới sinh ra
+
+Event Handler
+- Truy cập vào event với inline handler bằng $event
+- Dùng event modifier để gọi eventPreventDefaults,... Có thể viết nối nhau để thực hiện nhiều modifier
+- Vue cung cấp key modifier để handle event = phím ex: @click.ctrl = ctrl + click
+- Dùng exact modifier chắc chắn chỉ tổ hợp phím được bấm kích hoạt event
+
+BindingData
+- v-model sử dụng với select, input,...
+- Với multi select (checkbox, select) value của v-model là dạng array
+- Input modifier : lazy : input -> change, number, trim
+
+Fall Through
+- Không muốn truyền attrs mặc định root node của template thì sử dụng normal script thêm options
